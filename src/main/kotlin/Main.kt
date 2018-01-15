@@ -29,15 +29,26 @@ class CustomCollector : Collector() {
         val flightStates = api.getStates(0, null)
 
         //generate a labeled gauge for the altitude of all planes
-        val geoAltitudes = GaugeMetricFamily("flight_geo_altitude_ft", "Altitude of the plane in feet.", listOf("callsign"))
+        val geoAltitudes = GaugeMetricFamily("flight_geo_altitude_m", "Altitude of the plane in meter.", listOf("callsign"))
         if (flightStates.states != null) {
             flightStates.states.forEach {
                 if (it.geoAltitude != null && it.callsign != "") {
-                    geoAltitudes.addMetric(listOf(it.callsign), it.geoAltitude)
+                    geoAltitudes.addMetric(listOf(it.callsign.trim()), it.geoAltitude)
                 }
             }
         }
         result.add(geoAltitudes)
+
+        //generate a labeled gauge for the velocity of all planes
+        val velocity = GaugeMetricFamily("flight_velocity_mph", "velocity of the plane in miles/hour.", listOf("callsign"))
+        if (flightStates.states != null) {
+            flightStates.states.forEach {
+                if (it.velocity != null && it.callsign != "") {
+                    velocity.addMetric(listOf(it.callsign.trim()), it.velocity)
+                }
+            }
+        }
+        result.add(velocity)
 
         return result
     }
