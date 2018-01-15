@@ -1,0 +1,5 @@
+FROM openjdk:8-alpine
+
+COPY build/libs/flightexporter-1.0-SNAPSHOT.jar flightexporter-1.0-SNAPSHOT.jar
+
+CMD java -jar flightexporter-1.0-SNAPSHOT.jar
