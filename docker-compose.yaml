@@ -1,0 +1,14 @@
+version: '3'
+services:
+  exporter:
+    build: .
+    ports:
+     - "9555:9555"
+  prometheus:
+    image: "prom/prometheus"
+    ports:
+     - "9090:9090"
+    links:
+     - exporter
+    volumes:
+     - "./prometheus.yml:/etc/prometheus/prometheus.yml"
